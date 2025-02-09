@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: account
+  namespace: account
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-deployment
+  namespace: account
+  labels:
+    app: account
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: account
+        version: v1
+    spec:
+      serviceAccountName: account
+      containers:
+        - name: curl # faking the account app with curl for blueprints
+          image: curlimages/curl:latest
+          command: ["sh", "-c", "sleep infinity"]
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-service
+  namespace: account
+  labels:
+    app: account
+spec:
+  selector:
+    app: account
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
