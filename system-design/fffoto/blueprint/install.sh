@@ -157,9 +157,12 @@ kubectl apply -f "${relative_dir}/assets/media-processor/media-processor-securit
 
 # TODO: Run the cloud-provider-kind so there are external IPs for the services
 # TODO: Get gateway's external IP to access through that endpoint, once/if routes are set up.
+# TODO: mTLS security and PeerAuth for the services?
 
 log_info "Done setting up the blueprint of the system design for fffoto."
 
 echo """
 To set up observability and view the connections you can apply the istio samples/addons/{prometheus,grafana,kiali}.yaml files.
+You can run cloud-provider-kind to have an External IP for the gateway, then access it through:
+export GATEWAY_IP=$(kubectl get svc -n istio-system istio-ingressgateway -ojsonpath='{.status.loadBalancer.ingress[0].ip}')
 """

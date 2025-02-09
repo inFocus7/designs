@@ -26,6 +26,10 @@ spec:
     spec:
       serviceAccountName: account
       containers:
+        - name: echo-server
+          image: ealen/echo-server
+          ports:
+            - containerPort: 80
         - name: curl # faking the account app with curl for blueprints
           image: curlimages/curl:latest
           command: ["sh", "-c", "sleep infinity"]
@@ -47,5 +51,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
+      targetPort: 80
   type: ClusterIP

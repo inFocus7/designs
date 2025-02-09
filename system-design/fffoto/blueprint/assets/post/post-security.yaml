@@ -32,6 +32,6 @@ spec:
   egress:
     - hosts:
       - "istio-system/*"
-      - "./account-service.account.svc.cluster.local"
-      - "./group-service.group.svc.cluster.local"
-      - "./media-processor-service.media-processor.svc.cluster.local"
+      - "account/account-service.account.svc.cluster.local"
+      - "group/group-service.group.svc.cluster.local"
+      - "media-processor/media-processor-service.media-processor.svc.cluster.local"

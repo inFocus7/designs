@@ -29,5 +29,5 @@ spec:
   egress:
     - hosts:
       - "istio-system/*"
-      - "./account-service.account.svc.cluster.local"
-      - "./post-service.post.svc.cluster.local"
+      - "account/account-service.account.svc.cluster.local"
+      - "post/post-service.post.svc.cluster.local"
