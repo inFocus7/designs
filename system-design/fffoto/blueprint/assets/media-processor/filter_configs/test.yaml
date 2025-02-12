@@ -2,10 +2,10 @@ name: "Test Filter"
 description: "A test filter to test out parsing and adding to a filter processing chain"
 version: "1.0"
 parameters:
-  curve: "<path to curve file without 'curves/' prefix>"
-  lut: "<path to lut file without 'luts/' prefix>"
+  curve: "?.acv"
+  lut: "?.cube"
   fps: 14
-  crf: 18
+  crf: 23
   prefilter: # TODO: apply these filters before the lut/curve
     {}
   postfilter: # apply these filters after the lut/curve

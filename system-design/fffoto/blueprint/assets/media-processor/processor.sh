@@ -7,7 +7,7 @@ FILTER_CONFIGS_PATH="$RELATIVE_PATH/filter_configs"
 CURVES_PATH="$FILTER_CONFIGS_PATH/curves"
 LUTS_PATH="$FILTER_CONFIGS_PATH/luts"
 # the time limit of a processed video
-LIMIT_SECONDS=2.5
+LIMIT_SECONDS=2
 # width and height set to portrait mode
 WIDTH=1080
 HEIGHT=1920
@@ -177,7 +177,7 @@ crf=$(yq '.parameters.crf' < $filter_config_path)
 
 # create the filter chain
 # do a force scale for vertical
-filterchain=("scale='if(gt($WIDTH/$HEIGHT,iw/ih),$WIDTH,iw*$HEIGHT/ih)':'if(gt($WIDTH/$HEIGHT,iw/ih),ih*$WIDTH/iw,$HEIGHT)':flags=lanczos" "crop=$WIDTH:$HEIGHT:(in_w-$WIDTH)/2:(in_h-$HEIGHT)/2")
+filterchain=("scale='if(gt($WIDTH/$HEIGHT,iw/ih),$WIDTH,iw*$HEIGHT/ih)':'if(gt($WIDTH/$HEIGHT,iw/ih),ih*$WIDTH/iw,$HEIGHT)':flags=fast_bilinear" "crop=$WIDTH:$HEIGHT:(in_w-$WIDTH)/2:(in_h-$HEIGHT)/2")
 # auto-contrast/balance before applying the lut
 filterchain+=("colorbalance=rs=.05:gs=.05:bs=.05" "lutyuv=y=gammaval(0.95)")
 
@@ -201,7 +201,7 @@ fi
 filterchain_string=$(IFS=,; echo "${filterchain[*]}")
 
 # run ffmpeg command
-ffmpeg -i $INPUT_PATH -ss $START_TIME -to $END_TIME -vf $filterchain_string -preset fast -an -crf $crf $OUTPUT_PATH -y
+ffmpeg -i $INPUT_PATH -ss $START_TIME -to $END_TIME -vf $filterchain_string -preset veryfast -threads 0 -an -crf $crf $OUTPUT_PATH -y
 
 # Apply playback effect (boomerang, reverse, etc.)
 if [ -n "$PLAYBACK_EFFECT" ]; then
@@ -217,9 +217,8 @@ if [ -n "$PLAYBACK_EFFECT" ]; then
     TMP_FINAL_ABS=$(realpath "$TMP_FINAL")
 
     # Create a reversed version of the video (ensuring proper re-encoding)
-    ffmpeg -i "$OUTPUT_PATH_ABS" -vf reverse -af areverse -preset fast -crf "$crf" "$TMP_REVERSED_ABS" -y
+    ffmpeg -i "$OUTPUT_PATH_ABS" -vf reverse -af areverse -preset veryfast -threads 0 -crf "$crf" -movflags faststart "$TMP_REVERSED_ABS" -y
 
-    # Ensure files exist before proceeding
     if [ ! -f "$TMP_REVERSED_ABS" ]; then
       log_err "Reversed video file was not created successfully."
       exit 1
@@ -229,13 +228,10 @@ if [ -n "$PLAYBACK_EFFECT" ]; then
     echo "file '$OUTPUT_PATH_ABS'" > "$TMP_LIST_ABS"
     echo "file '$TMP_REVERSED_ABS'" >> "$TMP_LIST_ABS"
 
-    # Re-encode concatenated video to avoid frozen frames / corruption
-    ffmpeg -f concat -safe 0 -i "$TMP_LIST_ABS" -c:v libx264 -preset ultrafast -crf "$crf" -an "$TMP_FINAL_ABS" -y
+    ffmpeg -f concat -safe 0 -i "$TMP_LIST_ABS" -c copy "$TMP_FINAL_ABS" -y
 
-    # Replace the original output file with the final processed file
     mv "$TMP_FINAL_ABS" "$OUTPUT_PATH_ABS"
 
-    # Cleanup temporary files
     rm "$TMP_REVERSED_ABS" "$TMP_LIST_ABS"
   fi
 fi
