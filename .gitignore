@@ -1,1 +1,11 @@
 .idea/
+
+system-design/fffoto/blueprint/assets/media-processor/_test/
+
+system-design/fffoto/blueprint/assets/media-processor/filter_configs/curves/*
+!system-design/fffoto/blueprint/assets/media-processor/filter_configs/curves/insert_acv_here
+
+system-design/fffoto/blueprint/assets/media-processor/filter_configs/luts/*
+!system-design/fffoto/blueprint/assets/media-processor/filter_configs/luts/insert_cube_here
+
+.DS_Store
