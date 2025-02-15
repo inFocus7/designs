@@ -2,18 +2,18 @@ name: "Test Filter"
 description: "A test filter to test out parsing and adding to a filter processing chain"
 version: "1.0"
 parameters:
-  curve: "?.acv"
-  lut: "?.cube"
-  fps: 14
-  crf: 23
+  curve: "path.acv"
+  lut: "path.cube"
+  fps: 12
+  crf: 18
   prefilter: # TODO: apply these filters before the lut/curve
     {}
   postfilter: # apply these filters after the lut/curve
     grain: 25
-    noise: 5
+    noise: 0
     scale:
       filter: "gauss"
-      div: 2
+      div: 3
     blur:
       filter: "gblur"
-      radius: 1
+      radius: 0

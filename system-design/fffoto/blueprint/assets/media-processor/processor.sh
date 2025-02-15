@@ -278,3 +278,5 @@ rm "$OUTPUT_PATH-bk"
 
 # TODO: Add support for effect overlays + blending (ex. bokeh, light leaks, super 8, etc.)
 # TODO: Setup the prefilters
+#   - with the addition of these pre-filters, would it make most sense to _first_ process the video with the loop wanted, then apply the preFilter->lut/curve->postFilter?
+#   - this was any grain added before effects does not get looped? or is it getting looped aesthetic?
