@@ -40,6 +40,12 @@ There is an external S3 bucket for video storage, so we need a `ServiceEntry` to
 
 Note: One thing that's glaring (or maybe not) is just ensuring every workload has their own `ServiceAccount` to use as the principal for the `AuthorizationPolicy` (and `Sidecar`?) CRs.
 
+### Follow-Up Service Mesh B (Istio Ambient Mode) Design
+
+![fffoto istio service mesh ambient mode design](./media/fffoto-istio-ambient-design.excalidraw.svg)
+
+WIP. Still learning about ambient, although main difference would be using k8s Gateway API CRDs for routing and less amount of proxies deployed.
+
 #### Database considerations
 
 There are a few databases that would likely be in use for this.
