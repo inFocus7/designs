@@ -136,6 +136,17 @@ kubectl apply -f "${relative_dir}/assets/post/post-security.yaml"
 
 log_info "Setting up the MediaProccessor workload..."
 
+log_info "Setting up the media analyzer..."
+kubectl create ns media-analyzer
+kubectl label ns media-analyzer istio-injection=enabled
+
+kubectl apply -f "${relative_dir}/assets/media-processor/media-analyzer-workload.yaml"
+kubectl wait --for=condition=ready pod -l app=media-analyzer -n media-analyzer
+
+kubectl apply -f "${relative_dir}/assets/media-processor/media-analyzer-routing.yaml"
+kubectl apply -f "${relative_dir}/assets/media-processor/media-analyzer-security.yaml"
+
+log_info "Setting up the media processor..."
 kubectl create ns media-processor
 kubectl label ns media-processor istio-injection=enabled
 

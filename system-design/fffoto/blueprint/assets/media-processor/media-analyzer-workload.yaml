@@ -1,30 +1,30 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: media-processor
-  namespace: media-processor
+  name: media-analyzer
+  namespace: media-analyzer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: media-processor-deployment
-  namespace: media-processor
+  name: media-analyzer-deployment
+  namespace: media-analyzer
   labels:
-    app: media-processor
+    app: media-analyzer
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: media-processor
+      app: media-analyzer
       version: v1
   template:
     metadata:
       labels:
-        app: media-processor
+        app: media-analyzer
         version: v1
     spec:
-      serviceAccountName: media-processor
+      serviceAccountName: media-analyzer
       containers:
         - name: echo-server
           image: ealen/echo-server
@@ -41,13 +41,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: media-processor-service
-  namespace: media-processor
+  name: media-analyzer-service
+  namespace: media-analyzer
   labels:
-    app: media-processor
+    app: media-analyzer
 spec:
   selector:
-    app: media-processor
+    app: media-analyzer
   ports:
     - protocol: TCP
       port: 80
