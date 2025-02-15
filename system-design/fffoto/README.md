@@ -67,4 +67,3 @@ TODO: When I complete reading through the ambient mesh documentation and underst
 ## Additional Notes
 
 - The SVG are embedded with Excalidraw, so it should be easy to modify them if you want to make changes.
-- I'm planning on creating & pushing a blueprint/no-op for this system design deploying mock services and their CRs + Istio CRs to a K8s cluster.

@@ -1,5 +1,5 @@
 name: "Test Filter"
-description: "A test filter to test out parsing and adding to a filter processing chain"
+description: "A test filter to test out parsing and adding to a filter processing chain without needing to set up the K8s resources"
 version: "1.0"
 parameters:
   curve: "path.acv"
