@@ -106,33 +106,33 @@ log_info "Setting up the Account workload..."
 kubectl create ns account
 kubectl label ns account istio-injection=enabled
 
-kubectl apply -f "${relative_dir}/assets/account/account-workload.yaml"
+kubectl apply -f "${relative_dir}/assets/account/deployment/account-workload.yaml"
 kubectl wait --for=condition=ready pod -l app=account -n account
 
-kubectl apply -f "${relative_dir}/assets/account/account-routing.yaml"
-kubectl apply -f "${relative_dir}/assets/account/account-security.yaml"
+kubectl apply -f "${relative_dir}/assets/account/deployment/sidecar/account-routing.yaml"
+kubectl apply -f "${relative_dir}/assets/account/deployment/account-security.yaml"
 
 log_info "Setting up the Group workload..."
 
 kubectl create ns group
 kubectl label ns group istio-injection=enabled
 
-kubectl apply -f "${relative_dir}/assets/group/group-workload.yaml"
+kubectl apply -f "${relative_dir}/assets/group/deployment/group-workload.yaml"
 kubectl wait --for=condition=ready pod -l app=group -n group
 
-kubectl apply -f "${relative_dir}/assets/group/group-routing.yaml"
-kubectl apply -f "${relative_dir}/assets/group/group-security.yaml"
+kubectl apply -f "${relative_dir}/assets/group/deployment/sidecar/group-routing.yaml"
+kubectl apply -f "${relative_dir}/assets/group/deployment/group-security.yaml"
 
 log_info "Setting up the Post workload..."
 
 kubectl create ns post
 kubectl label ns post istio-injection=enabled
 
-kubectl apply -f "${relative_dir}/assets/post/post-workload.yaml"
+kubectl apply -f "${relative_dir}/assets/post/deployment/post-workload.yaml"
 kubectl wait --for=condition=ready pod -l app=post -n post
 
-kubectl apply -f "${relative_dir}/assets/post/post-routing.yaml"
-kubectl apply -f "${relative_dir}/assets/post/post-security.yaml"
+kubectl apply -f "${relative_dir}/assets/post/deployment/sidecar/post-routing.yaml"
+kubectl apply -f "${relative_dir}/assets/post/deployment/post-security.yaml"
 
 log_info "Setting up the MediaProccessor workload..."
 
@@ -140,21 +140,21 @@ log_info "Setting up the media analyzer..."
 kubectl create ns media-analyzer
 kubectl label ns media-analyzer istio-injection=enabled
 
-kubectl apply -f "${relative_dir}/assets/media-processor/media-analyzer-workload.yaml"
+kubectl apply -f "${relative_dir}/assets/media-processor/deployment/media-analyzer-workload.yaml"
 kubectl wait --for=condition=ready pod -l app=media-analyzer -n media-analyzer
 
-kubectl apply -f "${relative_dir}/assets/media-processor/media-analyzer-routing.yaml"
-kubectl apply -f "${relative_dir}/assets/media-processor/media-analyzer-security.yaml"
+kubectl apply -f "${relative_dir}/assets/media-processor/deployment/sidecar/media-analyzer-routing.yaml"
+kubectl apply -f "${relative_dir}/assets/media-processor/deployment/media-analyzer-security.yaml"
 
 log_info "Setting up the media processor..."
 kubectl create ns media-processor
 kubectl label ns media-processor istio-injection=enabled
 
-kubectl apply -f "${relative_dir}/assets/media-processor/media-processor-workload.yaml"
+kubectl apply -f "${relative_dir}/assets/media-processor/deployment/media-processor-workload.yaml"
 kubectl wait --for=condition=ready pod -l app=media-processor -n media-processor
 
-kubectl apply -f "${relative_dir}/assets/media-processor/media-processor-routing.yaml"
-kubectl apply -f "${relative_dir}/assets/media-processor/media-processor-security.yaml"
+kubectl apply -f "${relative_dir}/assets/media-processor/deployment/sidecar/media-processor-routing.yaml"
+kubectl apply -f "${relative_dir}/assets/media-processor/deployment/media-processor-security.yaml"
 
 # TODO/NOTE: The routes and security stuff created for the services above do not have egresses (Sidecars) to the databases as i'm still figuring out their setup.
 
