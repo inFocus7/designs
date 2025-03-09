@@ -1,11 +1,21 @@
+---
+title: "FFFoto: A Photo-Centric Social Media Platform"
+description: "A recreation of one of my favorite mobile apps from almost 10 years ago: PHHHOTO."
+date: 2025-02-08
+tags:
+  - system-design
+  - kubernetes
+  - istio
+---
+
 # FFFoto
 
-100% a copy/recreation of one of my favorite mobile apps from almost 10 years ago: [PHHHOTO](https://phhhoto.com).
+100% a recreation of one of my favorite mobile apps from almost 10 years ago: [PHHHOTO](https://phhhoto.com).
 
 ## System Design
 
 ### Initial Design
-![fffoto system design](./media/fffoto-system-design.excalidraw.svg)
+![fffoto system design](./assets/fffoto-system-design.excalidraw.svg)
 
 This was the initial "design" I came up with. Some things may be able to be consolidated to be more monolith; I wanted to keep it modular/microservices, because:
 1. I'm still getting a hang of service meshes and how they work.
@@ -18,7 +28,7 @@ They can all be in the same cluster for simplicity, but things such as the "Post
 
 ### Follow-Up Service Mesh (Istio Sidecar Mode) Design
 
-![fffoto istio service mesh design](./media/fffoto-istio-sidecar-design.excalidraw.svg)
+![fffoto istio service mesh design](./assets/fffoto-istio-sidecar-design.excalidraw.svg)
 
 This is from going through an Istio course and using it a teeny bit. There may be better ways to design this, but this is what I came up with.
 There are some things missing that I would need to look into to learn about more, like during the image processing loop ("live editing") how this would be handled: direct requests/responses vs. queueing, etc.
@@ -42,7 +52,7 @@ Note: One thing that's glaring (or maybe not) is just ensuring every workload ha
 
 ### Follow-Up Service Mesh B (Istio Ambient Mode) Design
 
-![fffoto istio service mesh ambient mode design](./media/fffoto-istio-ambient-design.excalidraw.svg)
+![fffoto istio service mesh ambient mode design](./assets/fffoto-istio-ambient-design.excalidraw.svg)
 
 WIP. Still learning about ambient, although main difference would be using k8s Gateway API CRDs for routing and less amount of proxies deployed.
 
