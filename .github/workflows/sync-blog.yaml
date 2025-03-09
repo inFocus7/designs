@@ -21,15 +21,10 @@ jobs:
           node-version: '20'
           cache: 'npm'
       
-      - name: Create package.json if it doesn't exist
-        run: |
-          if [ ! -f package.json ]; then
-            echo '{"private":true}' > package.json
-          fi
-      
       - name: Install dependencies
-        run: |
-          npm install gray-matter mongodb glob
+        run: npm ci || npm install
+        # npm ci is faster but requires package-lock.json
+        # falls back to npm install if no lock file exists
       
       - name: Sync posts to MongoDB
         env:
