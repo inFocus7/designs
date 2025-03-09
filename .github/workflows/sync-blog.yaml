@@ -1,0 +1,46 @@
+name: Sync Blog Posts to MongoDB
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+    paths:
+      - 'blog/**/*.md'
+
+jobs:
+  sync-posts:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Create package.json if it doesn't exist
+        run: |
+          if [ ! -f package.json ]; then
+            echo '{"private":true}' > package.json
+          fi
+      
+      - name: Install dependencies
+        run: |
+          npm install gray-matter mongodb glob
+      
+      - name: Sync posts to MongoDB
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: node .github/scripts/sync-posts.js
+      
+      - name: Report status
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "Blog sync completed successfully"
+          else
+            echo "Blog sync failed"
+          fi

@@ -1,6 +1,8 @@
 ---
 title: "FFFoto: A Photo-Centric Social Media Platform"
 description: "A recreation of one of my favorite mobile apps from almost 10 years ago: PHHHOTO."
+author: "Fabian Gonzalez"
+draft-project: /blueprints/fffoto
 date: 2025-02-08
 tags:
   - system-design
