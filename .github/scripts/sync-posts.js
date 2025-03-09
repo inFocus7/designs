@@ -48,27 +48,40 @@ async function syncPosts() {
         console.warn(`Warning: Missing required frontmatter in ${filePath}`);
       }
 
+      // Get existing document
+      const existingPost = await postsCollection.findOne({ path: filePath });
+      
+      // Create hash of content for comparison
+      const contentHash = require('crypto')
+        .createHash('md5')
+        .update(fileContent)
+        .digest('hex');
+
       const post = {
         slug: path.basename(path.dirname(filePath)),
         path: filePath,
         content: processedContent,
+        contentHash,  // Store hash for future comparisons
         ...frontMatter,
         lastUpdated: new Date(),
         syncedAt: new Date(),
       };
 
-      // Upsert the post
-      const result = await postsCollection.updateOne(
-        { path: filePath },
-        { $set: post },
-        { upsert: true }
-      );
-
-      console.log(
-        `Processed ${filePath}: ${
-          result.upsertedCount ? 'inserted' : 'updated'
-        }`
-      );
+      // Only update if content changed
+      if (!existingPost || existingPost.contentHash !== contentHash) {
+        const result = await postsCollection.updateOne(
+          { path: filePath },
+          { $set: post },
+          { upsert: true }
+        );
+        console.log(
+          `Processed ${filePath}: ${
+            result.upsertedCount ? 'inserted' : 'updated'
+          } (content changed)`
+        );
+      } else {
+        console.log(`Skipped ${filePath}: content unchanged`);
+      }
     }
 
     console.log('Blog sync completed successfully');
