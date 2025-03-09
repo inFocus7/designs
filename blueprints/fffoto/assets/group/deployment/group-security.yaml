@@ -1,0 +1,33 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: group-auth-policy
+  namespace: group
+spec:
+  selector:
+    matchLabels:
+      app: group
+  action: ALLOW
+  rules:
+    - from:
+      - source:
+          namespaces: ["account"]
+          principals: ["cluster.local/ns/account/sa/account"]
+      - source:
+          namespaces: ["post"]
+          principals: ["cluster.local/ns/post/sa/post"]
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: group-sidecar
+  namespace: group
+spec:
+  workloadSelector:
+    labels:
+      app: group
+  egress:
+    - hosts:
+      - "istio-system/*"
+      - "account/account-service.account.svc.cluster.local"
+      - "post/post-service.post.svc.cluster.local"

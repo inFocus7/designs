@@ -1,0 +1,28 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: media-processor-auth-policy
+  namespace: media-processor
+spec:
+  selector:
+    matchLabels:
+      app: media-processor
+  action: ALLOW
+  rules:
+    - from:
+      - source:
+          namespaces: ["post"]
+          principals: ["cluster.local/ns/post/sa/post"]
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: media-processor-sidecar
+  namespace: media-processor
+spec:
+  workloadSelector:
+    labels:
+      app: media-processor
+  egress:
+    - hosts:
+      - "istio-system/*"

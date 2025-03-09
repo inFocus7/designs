@@ -1,0 +1,19 @@
+name: "Test Filter"
+description: "A test filter to test out parsing and adding to a filter processing chain without needing to set up the K8s resources"
+version: "1.0"
+parameters:
+  curve: "path.acv"
+  lut: "path.cube"
+  fps: 12
+  crf: 18
+  prefilter: # TODO: apply these filters before the lut/curve
+    {}
+  postfilter: # apply these filters after the lut/curve
+    grain: 25
+    noise: 0
+    scale:
+      filter: "gauss"
+      div: 3
+    blur:
+      filter: "gblur"
+      radius: 0
